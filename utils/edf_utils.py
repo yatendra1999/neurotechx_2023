@@ -14,3 +14,4 @@ def create_edf(list, sampling_freq=250):
 
     # Create a RawArray
     raw = mne.io.RawArray(data, info)
+    return raw

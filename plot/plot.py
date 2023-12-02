@@ -5,12 +5,12 @@ import numpy as np
 class DynamicPlotter:
 
     def __init__(self) -> None:
+        plt.ion()
         x_len = 200         # Number of points to display
         y_range = [-0.000000, 250]  # Range of possible Y values to display
 
         # Create figure for plotting
-        self.fig = plt.figure()
-        self.ax = self.fig.add_subplot(1, 1, 1)
+        self.fig, self.ax = plt.subplots()
         self.xs = list(range(0, x_len))
         self.ys_o1 = [0] * x_len
         self.ys_o2 = [0] * x_len
@@ -31,19 +31,28 @@ class DynamicPlotter:
         plt.show(block=False)
 
     @LoggingDecorators.functional
-    def update_plot(self, data_values_o1, data_values_o2, data_values_pz) -> None:
-        # Append new data to the ys lists
-        self.ys_o1.append(data_values_o1)
-        self.ys_o2.append(data_values_o2)
-        self.ys_pz.append(data_values_pz)
+    def update_plot(self, data_values_o1, data_values_o2, data_values_pz, x_labels: list | None = None, reset: bool = False) -> None:
+        
+        if reset and all([isinstance(x, list) for x in [data_values_o1, data_values_o2, data_values_pz]]):
+            self.ys_o1 = data_values_o1
+            self.ys_o2 = data_values_o2
+            self.ys_pz = data_values_pz
+        else:
+            # Append new data to the ys lists
+            self.ys_o1.append(data_values_o1)
+            self.ys_o2.append(data_values_o2)
+            self.ys_pz.append(data_values_pz)
 
         # Keep only the last x_len data points
-        self.ys_o1 = self.ys_o1[-len(self.xs):]
-        self.ys_o2 = self.ys_o2[-len(self.xs):]
-        self.ys_pz = self.ys_pz[-len(self.xs):]
+        # self.ys_o1 = self.ys_o1[-len(self.xs):]
+        # self.ys_o2 = self.ys_o2[-len(self.xs):]
+        # self.ys_pz = self.ys_pz[-len(self.xs):]
 
         # Update the x-axis data
-        self.xs = list(range(len(self.ys_o1)))
+        if x_labels is not None:
+            self.xs = x_labels
+        else:
+            self.xs = list(range(len(self.ys_o1)))
 
         # Update the plot data for each line
         self.o1_line.set_ydata(self.ys_o1)

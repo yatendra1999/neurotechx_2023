@@ -3,6 +3,8 @@ from clickhouse import ClickhouseService
 from pylsl import StreamInlet, resolve_stream
 from plot import DynamicPlotter
 from utils.window import SensorWindows
+from utils.process import fft_from_numpy
+import numpy as np
 
 """Example program to show how to read a multi-channel time series from LSL."""
 
@@ -14,17 +16,15 @@ if __name__ == "__main__":
     inlet = StreamInlet(streams[0])
 
     dynamic_plotter = DynamicPlotter()
+    
     dynamic_plotter.show_plot()
 
     sensor_window = SensorWindows()
 
     while True:
         sample, timestamp = inlet.pull_sample()
-        fft_values = sensor_window.sample_data(timestamp, sample)
-        print(fft_values)
-        # dynamic_plotter.update_plot(sample[4], sample[5], sample[7])
-        # with ClickhouseService() as db:
-        #     db.insert_values("dump", "lsl_dump", {
-        #         "timestamp": time.time(),
-        #         "values": sample
-        #     })
+        sampled_values = sensor_window.sample_data(timestamp, sample)
+        if any([x is not None for x in sampled_values]):
+            fft_values = fft_from_numpy(sampled_values)
+            freqs = np.fft.rfftfreq(len(fft_values[0]), 1 / 256)
+            dynamic_plotter.update_plot(fft_values[0], fft_values[1], fft_values[2], freqs, True)
