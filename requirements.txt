@@ -4,3 +4,4 @@ clickhouse-connect
 numpy
 matplotlib
 scipy
+kafka-python3

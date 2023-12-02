@@ -5,10 +5,11 @@ from plot import DynamicPlotter
 from utils.window import SensorWindows
 from utils.process import fft_from_numpy
 import numpy as np
+from kafka import KafkaService
 
 """Example program to show how to read a multi-channel time series from LSL."""
 
-if __name__ == "__main__":
+if __name__ == "__rain__":
 
     print("looking for an EEG stream...")
     streams = resolve_stream('name', 'NEUPHONY')
@@ -28,3 +29,7 @@ if __name__ == "__main__":
             fft_values = fft_from_numpy(sampled_values)
             freqs = np.fft.rfftfreq(len(fft_values[0]), 1 / 256)
             dynamic_plotter.update_plot(fft_values[0], fft_values[1], fft_values[2], freqs, True)
+
+if __name__ == "__main__":
+    with KafkaService() as kafka:
+        kafka.send_message_to_topic("actions", {"direction": "UP"})
