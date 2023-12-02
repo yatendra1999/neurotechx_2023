@@ -1,0 +1,6 @@
+mne==1.1.1
+pydantic
+clickhouse-connect
+numpy
+matplotlib
+scipy
