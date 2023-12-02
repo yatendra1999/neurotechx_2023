@@ -26,6 +26,7 @@ if __name__ == "__rain__":
         sample, timestamp = inlet.pull_sample()
         sampled_values = sensor_window.sample_data(timestamp, sample)
         if any([x is not None for x in sampled_values]):
+<<<<<<< Updated upstream
             fft_values = fft_from_numpy(sampled_values)
             freqs = np.fft.rfftfreq(len(fft_values[0]), 1 / 256)
             dynamic_plotter.update_plot(fft_values[0], fft_values[1], fft_values[2], freqs, True)
@@ -33,3 +34,8 @@ if __name__ == "__rain__":
 if __name__ == "__main__":
     with KafkaService() as kafka:
         kafka.send_message_to_topic("actions", {"direction": "UP"})
+=======
+            freqs = np.fft.rfftfreq(len(sampled_values[0]), 1 / 250)
+            fft_values = np.abs(fft_from_numpy(sampled_values))
+            dynamic_plotter.update_plot(fft_values[0], fft_values[1], fft_values[2], freqs, True)
+>>>>>>> Stashed changes
