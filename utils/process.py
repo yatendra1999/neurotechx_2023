@@ -40,6 +40,7 @@ def smoothing_filter(values):
     return signal.savgol_filter(values, window_length=11, polyorder=3, mode="nearest")
 
 def clean_bad_sengments(values):
+    return values
     raw_values = raw_values.notch_filter(freqs = 50, notch_widths = 3)
     raw_values = raw_values.filter(l_freq=1, h_freq=45)
 

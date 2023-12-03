@@ -3,11 +3,11 @@ from .process import fft_transform
 
 
 class Window:
-    window_time = 5000 # milliseconds
+    window_time = 1000 # milliseconds
     last_sample_time = None
     samples = []
 
-    def __init__(self, window_time = 5000) -> None:
+    def __init__(self, window_time = 1000) -> None:
         self.window_time = window_time
    
     def sample(self, timestamp, value) -> None:

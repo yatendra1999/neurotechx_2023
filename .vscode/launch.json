@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Python: RUN MNE",
             "type": "python",
             "request": "launch",
-            "program": "test.py",
+            "program": "mne_test.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }

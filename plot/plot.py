@@ -1,13 +1,14 @@
 import matplotlib.pyplot as plt
 from clickhouse import LoggingDecorators
 import numpy as np
+import mne
 
 class DynamicPlotter:
 
     def __init__(self) -> None:
         plt.ion()
         x_len = 200         # Number of points to display
-        y_range = [-0.000000, 100]  # Range of possible Y values to display
+        y_range = [-0.000000, 0.001]  # Range of possible Y values to display
 
         # Create figure for plotting
         self.fig, self.ax = plt.subplots()
@@ -68,3 +69,37 @@ class DynamicPlotter:
         # Redraw the plot
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
+    
+    def plot_fft(self, events, stream_info):
+        # Set epoch duration to 1 second
+        # epoch_duration = 1.0
+
+        channels = ["O1", "O2", "Pz"]
+
+        # Sampling frequency and frequency bins for FFT
+        sfreq = stream_info['sfreq']
+        freqs = np.fft.rfftfreq(1, 1 / sfreq)
+
+
+        # Compute and plot FFT for each channel
+        o1_data = events[0]
+        o2_data = events[1]
+        pz_data = events[2]
+        self.update_plot(np.abs(np.fft.rfft(o1_data)), np.abs(np.fft.rfft(o2_data)), np.abs(np.fft.rfft(pz_data)), freqs, True)
+        # for i in range(len(channels)):
+        #     fft_results = []
+        #     fft_epoch = np.fft.rfft(events[i, :])
+        #     fft_results.append(fft_epoch)
+
+        #     # Compute the average FFT across all epochs
+        #     avg_fft = np.abs(fft_results)
+
+        #     # Plot the FFT
+        #     plt.plot(freqs, avg_fft, label=f'FFT of {i}')
+
+        # # Finalizing the plot
+        # plt.title('FFT of Multiple Channels')
+        # plt.xlabel('Frequency (Hz)')
+        # plt.ylabel('Amplitude')
+        # plt.legend()
+        # plt.show()
