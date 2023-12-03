@@ -7,7 +7,7 @@ class DynamicPlotter:
     def __init__(self) -> None:
         plt.ion()
         x_len = 200         # Number of points to display
-        y_range = [-0.000000, 250]  # Range of possible Y values to display
+        y_range = [-0.000000, 100]  # Range of possible Y values to display
 
         # Create figure for plotting
         self.fig, self.ax = plt.subplots()

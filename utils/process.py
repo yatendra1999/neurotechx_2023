@@ -11,7 +11,7 @@ def fft_from_numpy(window_samples):
     # plt.figure(figsize=(10, 6))
 
     # Compute and plot FFT for each channel in list1
-    return [bandpass_filter(np.fft.rfft(channel_data), 20, 40) for channel_data in window_samples]
+    return [smoothing_filter(np.fft.rfft(channel_data)) for channel_data in window_samples]
     
         # plt.plot(freqs, np.abs(fft_data), label=f'List1 Channel {i+1}')
 
@@ -34,3 +34,6 @@ def bandpass_filter(inp_signal, low_cutoff, high_cutoff, order=4):
     filtered_signal = signal.filtfilt(b, a, inp_signal)
 
     return filtered_signal
+
+def smoothing_filter(values):
+    return signal.savgol_filter(values, window_length=11, polyorder=3, mode="nearest")
