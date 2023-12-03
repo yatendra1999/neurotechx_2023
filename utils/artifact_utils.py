@@ -1,3 +1,6 @@
+# Authors: Yatendra Singh, Ayush Sharma, Aatmjeet Singh
+# Date: 2023-12-03
+
 import os
 import mne
 import numpy as np

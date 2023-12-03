@@ -1,8 +1,7 @@
 mne
 pydantic
-clickhouse-connect
 numpy
 matplotlib
 scipy
-kafka-python3
 pylsl
+keyboard
