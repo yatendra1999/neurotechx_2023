@@ -17,7 +17,7 @@ def edf_raw_convertor(file_path):
 
 def filter_bp_notch(eeg_raw_data):
     notch_filtered_raw = eeg_raw_data.copy().notch_filter(freqs = 50, notch_widths = 3)
-    bp_filtered_raw = notch_filtered_raw.copy().filter(l_freq=1, h_freq=45)    
+    bp_filtered_raw = notch_filtered_raw.copy().filter(l_freq=1, h_freq=45)
     return bp_filtered_raw
     
 #def csv_numpy_convertor(data,):
