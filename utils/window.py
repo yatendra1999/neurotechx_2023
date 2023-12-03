@@ -11,7 +11,7 @@ class Window:
         self.window_time = window_time
    
     def sample(self, timestamp, value) -> None:
-        print(self.last_sample_time, timestamp)
+        # print(self.last_sample_time, timestamp)
         if self.last_sample_time != None:
             if self.last_sample_time + self.window_time/1000 <= timestamp:
                 samples_copy = copy.deepcopy(self.samples)

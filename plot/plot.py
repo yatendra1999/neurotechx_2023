@@ -30,10 +30,10 @@ class DynamicPlotter:
         self.fig.canvas.draw()
         plt.show(block=False)
 
-    @LoggingDecorators.functional
+    # @LoggingDecorators.functional
     def update_plot(self, data_values_o1, data_values_o2, data_values_pz, x_labels: list | None = None, reset: bool = False) -> None:
         
-        if reset and all([isinstance(x, list) for x in [data_values_o1, data_values_o2, data_values_pz]]):
+        if reset and all([isinstance(x, np.ndarray) for x in [data_values_o1, data_values_o2, data_values_pz]]):
             self.ys_o1 = data_values_o1
             self.ys_o2 = data_values_o2
             self.ys_pz = data_values_pz

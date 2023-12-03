@@ -9,7 +9,7 @@ from kafka import KafkaService
 
 """Example program to show how to read a multi-channel time series from LSL."""
 
-if __name__ == "__rain__":
+if __name__ == "__main__":
 
     print("looking for an EEG stream...")
     streams = resolve_stream('name', 'NEUPHONY')
@@ -25,14 +25,13 @@ if __name__ == "__rain__":
     while True:
         sample, timestamp = inlet.pull_sample()
         sampled_values = sensor_window.sample_data(timestamp, sample)
+        print([len(i) for i in sampled_values if i is not None])
         if any([x is not None for x in sampled_values]):
+            freqs = np.fft.rfftfreq(len(sampled_values[0]), 1 / 256)
             fft_values = fft_from_numpy(sampled_values)
-            freqs = np.fft.rfftfreq(len(fft_values[0]), 1 / 256)
+            print(len(freqs))
             dynamic_plotter.update_plot(fft_values[0], fft_values[1], fft_values[2], freqs, True)
 
-if __name__ == "__main__":
+if __name__ == "__rain__":
     with KafkaService() as kafka:
         kafka.send_message_to_topic("actions", {"direction": "UP"})
-        freqs = np.fft.rfftfreq(len(sampled_values[0]), 1 / 250)
-        fft_values = np.abs(fft_from_numpy(sampled_values))
-        dynamic_plotter.update_plot(fft_values[0], fft_values[1], fft_values[2], freqs, True)
